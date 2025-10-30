@@ -33,7 +33,7 @@ const Index = () => {
   ]);
   const [command, setCommand] = useState("");
   const [logs, setLogs] = useState<LogEntry[]>([
-    { id: "init", message: "🕷️ Spider-Noir Case Files - Detective system initialized", type: "success" },
+    { id: "init", message: "🕸️ Spider-Verse Web Merge Visualizer initialized", type: "success" },
     { id: "ready", message: "Ready for commands: LINK, SPLIT, REPORT", type: "info" },
   ]);
   const [highlightedChain, setHighlightedChain] = useState<number | null>(null);
@@ -163,7 +163,7 @@ const Index = () => {
       >
         {/* Header */}
         <motion.h1
-          className="text-4xl md:text-5xl font-black text-center mb-2 text-glow font-noir"
+          className="text-4xl md:text-5xl font-black text-center mb-2 text-glow font-orbitron"
           animate={{ 
             textShadow: [
               "0 0 20px hsl(var(--primary)), 0 0 40px hsl(var(--primary) / 0.5)",
@@ -173,10 +173,10 @@ const Index = () => {
           }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          🕷️ Spider-Noir: Case Files
+          🕸️ Spider-Verse Web Merge
         </motion.h1>
         <p className="text-center text-muted-foreground mb-8 font-mono">
-          Shadows & Connections - A 1930s Mystery
+          Dynamic Linked List Operations Visualizer
         </p>
 
         {/* Canvas */}
@@ -203,7 +203,7 @@ const Index = () => {
             />
             <Button
               onClick={handleCommand}
-              className="bg-primary hover:bg-primary/80 text-primary-foreground font-bold box-glow gap-2 font-noir"
+              className="bg-primary hover:bg-primary/80 text-primary-foreground font-bold box-glow gap-2 font-orbitron"
             >
               <Play className="w-4 h-4" />
               Run

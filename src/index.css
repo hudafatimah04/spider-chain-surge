@@ -8,50 +8,50 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 8%;
-    --foreground: 0 0% 95%;
+    --background: 225 15% 7%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 224 20% 10%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 224 20% 10%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 45 80% 55%;
-    --primary-foreground: 0 0% 10%;
+    --primary: 348 83% 47%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 0 0% 85%;
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 0 0% 25%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 215 25% 27%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 35 65% 45%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 271 91% 65%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 0% 20%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive: 348 83% 47%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 30%;
-    --input: 0 0% 15%;
-    --ring: 45 80% 55%;
+    --border: 271 50% 30%;
+    --input: 224 30% 15%;
+    --ring: 271 91% 65%;
 
-    --radius: 0.25rem;
+    --radius: 0.75rem;
 
-    --node-core: 0 0% 10%;
-    --node-glow: 45 80% 55%;
-    --web-line: 0 0% 85%;
-    --active-chain: 35 65% 45%;
-    --portal-flash: 45 100% 70%;
-    --console-bg: 0 0% 8%;
+    --node-core: 348 83% 47%;
+    --node-glow: 217 91% 60%;
+    --web-line: 271 91% 65%;
+    --active-chain: 343 89% 61%;
+    --portal-flash: 180 100% 50%;
+    --console-bg: 217 33% 10%;
 
-    --glow-sm: 0 0 8px;
-    --glow-md: 0 0 16px;
-    --glow-lg: 0 0 32px;
+    --glow-sm: 0 0 10px;
+    --glow-md: 0 0 20px;
+    --glow-lg: 0 0 40px;
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
 
 @layer base {
   * {
@@ -59,8 +59,8 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-gradient-to-br from-[#0A0A0A] via-[#1A1410] to-[#0A0A0A] text-foreground min-h-screen;
-    font-family: 'Special Elite', cursive;
+    @apply bg-gradient-to-br from-[#0B0C10] via-[#1B0C40] to-[#0B0C10] text-foreground min-h-screen;
+    font-family: 'Orbitron', sans-serif;
     background-attachment: fixed;
   }
 
@@ -72,12 +72,10 @@ All colors MUST be HSL.
     width: 100%;
     height: 100%;
     background-image: 
-      repeating-linear-gradient(0deg, transparent, transparent 2px, hsl(0 0% 0% / 0.3) 2px, hsl(0 0% 0% / 0.3) 4px),
-      radial-gradient(circle at 20% 50%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, hsl(var(--accent) / 0.06) 0%, transparent 50%);
+      radial-gradient(circle at 20% 50%, hsl(var(--accent) / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, hsl(var(--secondary) / 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
-    opacity: 0.6;
   }
 
   #root {
@@ -112,10 +110,10 @@ All colors MUST be HSL.
   }
 
   .font-mono {
-    font-family: 'Courier Prime', monospace;
+    font-family: 'JetBrains Mono', monospace;
   }
 
-  .font-noir {
-    font-family: 'Special Elite', cursive;
+  .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
   }
 }
