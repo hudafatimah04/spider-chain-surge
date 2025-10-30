@@ -219,7 +219,7 @@ const Index = () => {
               className="gap-2 border-secondary/50 text-secondary hover:bg-secondary/10 font-mono"
             >
               <LinkIcon className="w-3 h-3" />
-              LINK 3 4
+              LINK
             </Button>
             <Button
               variant="outline"
@@ -228,7 +228,7 @@ const Index = () => {
               className="gap-2 border-destructive/50 text-destructive hover:bg-destructive/10 font-mono"
             >
               <Split className="w-3 h-3" />
-              SPLIT 2
+              SPLIT
             </Button>
             <Button
               variant="outline"
@@ -237,7 +237,7 @@ const Index = () => {
               className="gap-2 border-accent/50 text-accent hover:bg-accent/10 font-mono"
             >
               <Zap className="w-3 h-3" />
-              REPORT 1
+              REPORT
             </Button>
           </div>
         </motion.div>

@@ -21,16 +21,16 @@ export const VisualizationCanvas = ({
 }: VisualizationCanvasProps) => {
   const [hoveredNode, setHoveredNode] = useState<number | null>(null);
 
-  const getNodePosition = (chainIndex: number, nodeIndex: number, chainLength: number) => {
+  const getNodePosition = (nodeId: number, nodeIndex: number, chainLength: number) => {
     const canvasWidth = 800;
     const canvasHeight = 400;
-    const chainSpacing = canvasHeight / (chains.length + 1);
+    const rowHeight = 80;
     const nodeSpacing = Math.min(120, (canvasWidth - 100) / Math.max(chainLength, 1));
     const chainStartX = (canvasWidth - (chainLength - 1) * nodeSpacing) / 2;
     
     return {
       x: chainStartX + nodeIndex * nodeSpacing,
-      y: chainSpacing * (chainIndex + 1),
+      y: nodeId * rowHeight,
     };
   };
 
@@ -64,8 +64,8 @@ export const VisualizationCanvas = ({
             if (node.next !== null) {
               const nextNodeIndex = chain.findIndex((n) => n.id === node.next);
               if (nextNodeIndex !== -1) {
-                const pos1 = getNodePosition(chainIndex, nodeIndex, chain.length);
-                const pos2 = getNodePosition(chainIndex, nextNodeIndex, chain.length);
+                const pos1 = getNodePosition(node.id, nodeIndex, chain.length);
+                const pos2 = getNodePosition(node.next, nextNodeIndex, chain.length);
                 const isHighlighted = highlightedChain === chainIndex;
                 const isAnimating = 
                   animatingConnection?.from === node.id && 
@@ -91,7 +91,7 @@ export const VisualizationCanvas = ({
         {/* Draw nodes */}
         {chains.map((chain, chainIndex) =>
           chain.map((node, nodeIndex) => {
-            const pos = getNodePosition(chainIndex, nodeIndex, chain.length);
+            const pos = getNodePosition(node.id, nodeIndex, chain.length);
             const isHighlighted = highlightedChain === chainIndex;
             const isActive = hoveredNode === node.id;
             
