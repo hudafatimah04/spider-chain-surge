@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { NodeVisual } from "./NodeVisual";
 import { WebConnection } from "./WebConnection";
 import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Node {
   id: number;
@@ -34,17 +35,22 @@ export const VisualizationCanvas = ({
     };
   };
 
+  // Calculate dynamic height based on max node ID
+  const maxNodeId = Math.max(...chains.flat().map(n => n.id), 0);
+  const dynamicHeight = Math.max(400, (maxNodeId + 1) * 80 + 50);
+
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <motion.svg
-        width="100%"
-        height="400"
-        viewBox="0 0 800 400"
-        className="border-2 border-accent/20 rounded-lg bg-card/30 backdrop-blur-sm box-glow-accent"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
+      <ScrollArea className="h-[400px] border-2 border-accent/20 rounded-lg">
+        <motion.svg
+          width="100%"
+          height={dynamicHeight}
+          viewBox={`0 0 800 ${dynamicHeight}`}
+          className="bg-card/30 backdrop-blur-sm"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
         {/* Background pattern */}
         <defs>
           <pattern id="web-grid" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
@@ -56,7 +62,7 @@ export const VisualizationCanvas = ({
             />
           </pattern>
         </defs>
-        <rect width="800" height="400" fill="url(#web-grid)" />
+        <rect width="800" height={dynamicHeight} fill="url(#web-grid)" />
 
         {/* Draw connections first (behind nodes) */}
         {chains.map((chain, chainIndex) =>
@@ -108,7 +114,8 @@ export const VisualizationCanvas = ({
             );
           })
         )}
-      </motion.svg>
+        </motion.svg>
+      </ScrollArea>
     </div>
   );
 };

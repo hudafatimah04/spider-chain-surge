@@ -19,25 +19,37 @@ interface LogEntry {
 }
 
 const Index = () => {
-  const [chains, setChains] = useState<Node[][]>([
-    [
-      { id: 1, next: 2 },
-      { id: 2, next: 3 },
-      { id: 3, next: null },
-    ],
-    [
-      { id: 4, next: 5 },
-      { id: 5, next: null },
-    ],
-    [{ id: 6, next: null }],
-  ]);
+  const [initialized, setInitialized] = useState(false);
+  const [nodeCount, setNodeCount] = useState("");
+  const [chains, setChains] = useState<Node[][]>([]);
   const [command, setCommand] = useState("");
   const [logs, setLogs] = useState<LogEntry[]>([
-    { id: "init", message: "🕸️ Spider-Verse Web Merge Visualizer initialized", type: "success" },
-    { id: "ready", message: "Ready for commands: LINK, SPLIT, REPORT", type: "info" },
+    { id: "init", message: "🕸️ Spider-Verse Web Merge Visualizer", type: "success" },
+    { id: "ready", message: "Enter number of nodes to begin", type: "info" },
   ]);
   const [highlightedChain, setHighlightedChain] = useState<number | null>(null);
   const [animatingConnection, setAnimatingConnection] = useState<{ from: number; to: number } | null>(null);
+
+  const initializeNodes = () => {
+    const count = parseInt(nodeCount);
+    if (isNaN(count) || count < 1 || count > 20) {
+      toast.error("Please enter a number between 1 and 20");
+      return;
+    }
+
+    const newChains: Node[][] = [];
+    for (let i = 1; i <= count; i++) {
+      newChains.push([{ id: i, next: null }]);
+    }
+
+    setChains(newChains);
+    setInitialized(true);
+    setLogs([
+      { id: "init", message: `🕸️ Initialized ${count} nodes`, type: "success" },
+      { id: "ready", message: "Ready for commands: LINK, SPLIT, REPORT", type: "info" },
+    ]);
+    toast.success(`${count} nodes created!`);
+  };
 
   const addLog = (message: string, type: "info" | "success" | "error" = "info") => {
     setLogs((prev) => [...prev, { id: Date.now().toString(), message, type }]);
@@ -64,22 +76,24 @@ const Index = () => {
     }
 
     // Find tail of chain A
-    const chainA = [...chains[chainAIndex]];
+    const chainA = chains[chainAIndex].map(n => ({ ...n }));
+    const chainB = chains[chainBIndex].map(n => ({ ...n }));
     const tailNode = chainA[chainA.length - 1];
     
     // Animate connection
-    setAnimatingConnection({ from: tailNode.id, to: nodeB });
+    setAnimatingConnection({ from: tailNode.id, to: chainB[0].id });
     
     setTimeout(() => {
-      tailNode.next = nodeB;
-      const mergedChain = [...chainA, ...chains[chainBIndex]];
+      // Connect tail to first node of chain B
+      tailNode.next = chainB[0].id;
+      const mergedChain = [...chainA, ...chainB];
       
       setChains((prev) => {
         const newChains = prev.filter((_, i) => i !== chainAIndex && i !== chainBIndex);
         return [...newChains, mergedChain];
       });
 
-      addLog(`🕸️ LINK: Connected node ${nodeA}'s chain → node ${nodeB}'s chain`, "success");
+      addLog(`🕸️ LINK: Connected ${chainA.map(n => n.id).join('→')} to ${chainB.map(n => n.id).join('→')}`, "success");
       toast.success("Chains merged!");
       setAnimatingConnection(null);
     }, 1000);
@@ -179,12 +193,41 @@ const Index = () => {
           Dynamic Linked List Operations Visualizer
         </p>
 
-        {/* Canvas */}
-        <VisualizationCanvas
-          chains={chains}
-          highlightedChain={highlightedChain}
-          animatingConnection={animatingConnection}
-        />
+        {/* Initialization */}
+        {!initialized ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-full max-w-md mx-auto mb-8 p-6 border-2 border-primary/30 rounded-lg bg-card/50 backdrop-blur-sm box-glow"
+          >
+            <h2 className="text-xl font-bold text-center mb-4 text-primary">Initialize Nodes</h2>
+            <div className="flex gap-3">
+              <Input
+                type="number"
+                value={nodeCount}
+                onChange={(e) => setNodeCount(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && initializeNodes()}
+                placeholder="Enter number of nodes (1-20)"
+                className="flex-1 bg-input border-accent/40 font-mono"
+                min="1"
+                max="20"
+              />
+              <Button
+                onClick={initializeNodes}
+                className="bg-primary hover:bg-primary/80 text-primary-foreground font-bold box-glow font-orbitron"
+              >
+                Create
+              </Button>
+            </div>
+          </motion.div>
+        ) : (
+          <>
+            {/* Canvas */}
+            <VisualizationCanvas
+              chains={chains}
+              highlightedChain={highlightedChain}
+              animatingConnection={animatingConnection}
+            />
 
         {/* Command Controls */}
         <motion.div
@@ -242,14 +285,16 @@ const Index = () => {
           </div>
         </motion.div>
 
-        {/* Console */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <SpiderConsole logs={logs} />
-        </motion.div>
+            {/* Console */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <SpiderConsole logs={logs} />
+            </motion.div>
+          </>
+        )}
       </motion.div>
     </div>
   );
